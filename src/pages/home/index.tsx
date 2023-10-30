@@ -36,6 +36,66 @@ export function Home() {
           <div className="w-full h-px bg-slate-400"> </div>
           <p className=" text-zinc-700 text-xs mt-3"> Cidade </p>
         </section>
+        <section className=" flex flex-col px-3 py-2 items-center w-full bg-white">
+          <img
+            src={ney}
+            className="w-full max-h-72 hover:scale-105 transition-all"
+          />
+          <h2 className="text-black font-bold text-lg mt-6"> Nome do Carro </h2>
+          <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
+            <p> 2001/2002 | 87987km</p>
+            <strong className="font-medium text-zinc-700 text-lg">
+              Rs 45498.00
+            </strong>
+          </div>
+          <div className="w-full h-px bg-slate-400"> </div>
+          <p className=" text-zinc-700 text-xs mt-3"> Cidade </p>
+        </section>
+        <section className=" flex flex-col px-3 py-2 items-center w-full bg-white">
+          <img
+            src={ney}
+            className="w-full max-h-72 hover:scale-105 transition-all"
+          />
+          <h2 className="text-black font-bold text-lg mt-6"> Nome do Carro </h2>
+          <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
+            <p> 2001/2002 | 87987km</p>
+            <strong className="font-medium text-zinc-700 text-lg">
+              Rs 45498.00
+            </strong>
+          </div>
+          <div className="w-full h-px bg-slate-400"> </div>
+          <p className=" text-zinc-700 text-xs mt-3"> Cidade </p>
+        </section>
+        <section className=" flex flex-col px-3 py-2 items-center w-full bg-white">
+          <img
+            src={ney}
+            className="w-full max-h-72 hover:scale-105 transition-all"
+          />
+          <h2 className="text-black font-bold text-lg mt-6"> Nome do Carro </h2>
+          <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
+            <p> 2001/2002 | 87987km</p>
+            <strong className="font-medium text-zinc-700 text-lg">
+              Rs 45498.00
+            </strong>
+          </div>
+          <div className="w-full h-px bg-slate-400"> </div>
+          <p className=" text-zinc-700 text-xs mt-3"> Cidade </p>
+        </section>
+        <section className=" flex flex-col px-3 py-2 items-center w-full bg-white">
+          <img
+            src={ney}
+            className="w-full max-h-72 hover:scale-105 transition-all"
+          />
+          <h2 className="text-black font-bold text-lg mt-6"> Nome do Carro </h2>
+          <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
+            <p> 2001/2002 | 87987km</p>
+            <strong className="font-medium text-zinc-700 text-lg">
+              Rs 45498.00
+            </strong>
+          </div>
+          <div className="w-full h-px bg-slate-400"> </div>
+          <p className=" text-zinc-700 text-xs mt-3"> Cidade </p>
+        </section>
       </main>
     </Container>
   );
