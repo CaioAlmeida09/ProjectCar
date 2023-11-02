@@ -1,5 +1,4 @@
 import { RegisterOptions, UseFormRegister } from "react-hook-form";
-import { AnySchema } from "yup";
 
 interface InputProps {
   placeholder: string;
