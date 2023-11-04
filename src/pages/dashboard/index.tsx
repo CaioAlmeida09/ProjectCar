@@ -1,7 +1,10 @@
+import { Container } from "../../components/container";
+import { PlaceHeader } from "../../components/placeHeader";
+
 export function Dashboard() {
   return (
-    <div>
-      <h1>Hello Dashboard</h1>
-    </div>
+    <Container>
+      <PlaceHeader />
+    </Container>
   );
 }

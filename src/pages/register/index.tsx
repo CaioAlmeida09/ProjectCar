@@ -11,7 +11,8 @@ import {
   updateProfile,
   signOut,
 } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { AuthContext } from "../../contexts/context";
 
 //
 const schema = z.object({
@@ -29,6 +30,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 export function Register() {
   const navigate = useNavigate();
+  const { HandleUser } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -43,6 +45,11 @@ export function Register() {
       .then(async (user) => {
         await updateProfile(user.user, {
           displayName: data.name,
+        });
+        HandleUser({
+          name: data.name,
+          email: data.email,
+          uid: user.user.uid,
         });
         console.log("Cadastrado com Sucesso");
         navigate("/dashboard", { replace: true });
