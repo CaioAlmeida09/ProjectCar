@@ -1,3 +1,4 @@
+import { ChangeEvent, useContext, useState } from "react";
 import { Container } from "../../../components/container";
 import { Input } from "../../../components/input";
 import { PlaceHeader } from "../../../components/placeHeader";
@@ -5,7 +6,16 @@ import { FiUpload } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Register } from "../../register";
+import { AuthContext } from "../../../contexts/context";
+import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import { storage } from "../../../services/firebaseconection";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
 const schema = z.object({
   name: z.string().nonempty("o nome é obrigatório"),
@@ -22,7 +32,15 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
+
+interface ImageCarProps {
+  uid: string;
+  name: string;
+  url: string;
+  previewUrl: string;
+}
 export function New() {
+  const { user } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -35,7 +53,46 @@ export function New() {
 
   function OnSubmit(data: FormData) {
     console.log(data);
+    alert("Carro cadastrado com sucesso");
+    reset();
   }
+
+  async function HandleImage(e: ChangeEvent<HTMLInputElement>) {
+    if (e.target.files && e.target.files[0]) {
+      const image = e.target.files[0];
+      if (image.type === "image/jpeg" || image.type === "image/png") {
+        await HandleUpload(image);
+        console.log("deu certo");
+      } else {
+        alert("Imagem invalida. Coloque uma imagem png u jpeg");
+        return;
+      }
+    }
+  }
+
+  const navigate = useNavigate();
+  function HandleUpload(image: File) {
+    if (!user?.uid) {
+      return navigate("/login");
+    }
+    const currentUid = user?.uid;
+    const uidImage = uuidv4();
+    const uploadRef = ref(storage, `images/${currentUid}/${uidImage}`);
+    uploadBytes(uploadRef, image).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((downLoadUrl) => {
+        console.log("Url da imagem", downLoadUrl);
+        const imageItem = {
+          name: uidImage,
+          uid: currentUid,
+          previewUrl: URL.createObjectURL(image),
+          url: downLoadUrl,
+        };
+        setImageCar((images) => [...images, imageItem]);
+      });
+    });
+  }
+
+  const [imageCar, setImageCar] = useState<ImageCarProps[]>([]);
   return (
     <Container>
       <PlaceHeader />
@@ -52,12 +109,13 @@ export function New() {
                 className="cursor-pointer"
                 type="file"
                 accept="image"
+                onChange={HandleImage}
               />{" "}
             </div>
           </button>
         </section>
         <form
-          className="w-full flex flex-col gap-5"
+          className="w-full h-screen flex flex-col gap-5"
           onSubmit={handleSubmit(OnSubmit)}
         >
           <div className="mt-5">
@@ -137,7 +195,7 @@ export function New() {
           <div>
             <p className="mb-2 font-medium"> Descrição</p>
             <textarea
-              className="border-2 rounded-md h-24 px-2"
+              className="border-2 rounded-md h-24 px-2 w-full"
               {...register("description")}
               id="description"
               name="description"
@@ -148,7 +206,7 @@ export function New() {
             )}
           </div>
           <button
-            className="bg-black text-white text-medium rounded-md h-10"
+            className="bg-black text-white text-medium rounded-md h-12 cursor-pointer hover:opacity-90"
             type="submit"
           >
             {" "}
