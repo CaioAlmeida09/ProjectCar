@@ -16,6 +16,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
+import { BsTrash } from "react-icons/bs";
 
 const schema = z.object({
   name: z.string().nonempty("o nome é obrigatório"),
@@ -91,6 +92,18 @@ export function New() {
       });
     });
   }
+  async function HandleDeleteImage(item: ImageCarProps) {
+    const imagePath = `images/${item.uid}/${item.name}`;
+    const imageRef = ref(storage, imagePath);
+
+    try {
+      await deleteObject(imageRef);
+    } catch (err) {
+      console.log("Erro ao deletar", { err });
+    }
+
+    setImageCar(imageCar.filter((car) => car.url !== item.url));
+  }
 
   const [imageCar, setImageCar] = useState<ImageCarProps[]>([]);
   return (
@@ -113,6 +126,24 @@ export function New() {
               />{" "}
             </div>
           </button>
+          {imageCar.map((item) => (
+            <div
+              key={item.name}
+              className="w-full h-32 flex justify-center items-center relative"
+            >
+              <img
+                src={item.previewUrl}
+                alt={item.name}
+                className="rounded-lg w-full h-32 object-cover"
+              />
+              <button
+                className="absolute"
+                onClick={() => HandleDeleteImage(item)}
+              >
+                <BsTrash size={32} color="#fff" />
+              </button>
+            </div>
+          ))}
         </section>
         <form
           className="w-full h-screen flex flex-col gap-5"
