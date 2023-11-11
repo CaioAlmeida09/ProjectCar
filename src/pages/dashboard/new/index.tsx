@@ -9,7 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthContext } from "../../../contexts/context";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { storage } from "../../../services/firebaseconection";
+
+import { storage, db } from "../../../services/firebaseconection";
 import {
   ref,
   uploadBytes,
@@ -17,6 +18,7 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { BsTrash } from "react-icons/bs";
+import { addDoc, collection } from "firebase/firestore";
 
 const schema = z.object({
   name: z.string().nonempty("o nome é obrigatório"),
@@ -53,9 +55,42 @@ export function New() {
   });
 
   function OnSubmit(data: FormData) {
+    if (imageCar.length === 0) {
+      alert("Anexe uma imagem");
+      return;
+    }
+
     console.log(data);
-    alert("Carro cadastrado com sucesso");
-    reset();
+    const CartListImage = imageCar.map((car) => {
+      return {
+        uid: car.uid,
+        name: car.name,
+        url: car.url,
+      };
+    });
+    addDoc(collection(db, "Cars"), {
+      name: data.name,
+      model: data.model,
+      whatsapp: data.whatsapp,
+      city: data.city,
+      year: data.year,
+      km: data.KM,
+      price: data.price,
+      description: data.description,
+      created: new Date(),
+      owner: user?.name,
+      uid: user?.uid,
+      images: CartListImage,
+    })
+      .then(() => {
+        reset();
+        setImageCar([]);
+        console.log("Cadastrado com sucesso");
+      })
+      .catch((error) => {
+        console.log("Erro ao cadastrar no banco");
+        console.log(error);
+      });
   }
 
   async function HandleImage(e: ChangeEvent<HTMLInputElement>) {
