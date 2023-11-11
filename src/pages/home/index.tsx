@@ -1,7 +1,51 @@
 import { Container } from "../../components/container";
 import ney from "../../assets/ney.webp";
-
+import { useState, useEffect } from "react";
+import { query, collection, getDocs, orderBy } from "firebase/firestore";
+import { db } from "../../services/firebaseconection";
+import { ImageCarProps } from "../../pages/dashboard/new/index";
+import { Link } from "react-router-dom";
+interface carProps {
+  id: string;
+  name: string;
+  year: string;
+  price: string | number;
+  city: string;
+  uid: string;
+  km: string;
+  images: ImageCarProps[];
+}
 export function Home() {
+  const [cars, setCars] = useState<carProps[]>([]);
+
+  useEffect(() => {
+    function LoadCars() {
+      const carsRef = collection(db, "Cars");
+      const queryCars = query(carsRef, orderBy("created", "desc"));
+      getDocs(queryCars)
+        .then((snapshot) => {
+          const listCars = [] as carProps[];
+          snapshot.forEach((doc) => {
+            listCars.push({
+              id: doc.id,
+              name: doc.data().name,
+              year: doc.data().year,
+              km: doc.data().km,
+              city: doc.data().city,
+              price: doc.data().price,
+              images: doc.data().images,
+              uid: doc.data().uid,
+            });
+          });
+          setCars(listCars);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("erro ao buscar");
+        });
+    }
+    LoadCars();
+  }, []);
   return (
     <Container>
       <form className="flex justify-center md:gap-12 gap-4 mt-5">
@@ -21,81 +65,31 @@ export function Home() {
         Carros Novos e Usados em Todo o Brasil
       </h1>
       <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <section className=" flex flex-col px-3 py-2 items-center w-full bg-white">
-          <img
-            src={ney}
-            className="w-full max-h-72 hover:scale-105 transition-all"
-          />
-          <h2 className="text-black font-bold text-lg mt-6"> Nome do Carro </h2>
-          <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
-            <p> 2001/2002 | 87987km</p>
-            <strong className="font-medium text-zinc-700 text-lg">
-              Rs 45498.00
-            </strong>
-          </div>
-          <div className="w-full h-px bg-slate-400"> </div>
-          <p className=" text-zinc-700 text-xs mt-3"> Cidade </p>
-        </section>
-        <section className=" flex flex-col px-3 py-2 items-center w-full bg-white">
-          <img
-            src={ney}
-            className="w-full max-h-72 hover:scale-105 transition-all"
-          />
-          <h2 className="text-black font-bold text-lg mt-6"> Nome do Carro </h2>
-          <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
-            <p> 2001/2002 | 87987km</p>
-            <strong className="font-medium text-zinc-700 text-lg">
-              Rs 45498.00
-            </strong>
-          </div>
-          <div className="w-full h-px bg-slate-400"> </div>
-          <p className=" text-zinc-700 text-xs mt-3"> Cidade </p>
-        </section>
-        <section className=" flex flex-col px-3 py-2 items-center w-full bg-white">
-          <img
-            src={ney}
-            className="w-full max-h-72 hover:scale-105 transition-all"
-          />
-          <h2 className="text-black font-bold text-lg mt-6"> Nome do Carro </h2>
-          <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
-            <p> 2001/2002 | 87987km</p>
-            <strong className="font-medium text-zinc-700 text-lg">
-              Rs 45498.00
-            </strong>
-          </div>
-          <div className="w-full h-px bg-slate-400"> </div>
-          <p className=" text-zinc-700 text-xs mt-3"> Cidade </p>
-        </section>
-        <section className=" flex flex-col px-3 py-2 items-center w-full bg-white">
-          <img
-            src={ney}
-            className="w-full max-h-72 hover:scale-105 transition-all"
-          />
-          <h2 className="text-black font-bold text-lg mt-6"> Nome do Carro </h2>
-          <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
-            <p> 2001/2002 | 87987km</p>
-            <strong className="font-medium text-zinc-700 text-lg">
-              Rs 45498.00
-            </strong>
-          </div>
-          <div className="w-full h-px bg-slate-400"> </div>
-          <p className=" text-zinc-700 text-xs mt-3"> Cidade </p>
-        </section>
-        <section className=" flex flex-col px-3 py-2 items-center w-full bg-white">
-          <img
-            src={ney}
-            className="w-full max-h-72 hover:scale-105 transition-all"
-          />
-          <h2 className="text-black font-bold text-lg mt-6"> Nome do Carro </h2>
-          <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
-            <p> 2001/2002 | 87987km</p>
-            <strong className="font-medium text-zinc-700 text-lg">
-              Rs 45498.00
-            </strong>
-          </div>
-          <div className="w-full h-px bg-slate-400"> </div>
-          <p className=" text-zinc-700 text-xs mt-3"> Cidade </p>
-        </section>
+        {cars.map((car) => (
+          <Link to={`/car/${car.id}`}>
+            <section
+              key={car.id}
+              className=" flex flex-col px-3 py-2 items-center w-full bg-white"
+            >
+              <img
+                src={car.images[0].url}
+                className="w-full max-h-72 hover:scale-105 transition-all"
+              />
+              <h2 className="text-black font-bold text-lg mt-6">{car.name}</h2>
+              <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
+                <p>
+                  {" "}
+                  {car.year} | {car.km}
+                </p>
+                <strong className="font-medium text-zinc-700 text-lg">
+                  {car.price}
+                </strong>
+              </div>
+              <div className="w-full h-px bg-slate-400"> </div>
+              <p className=" text-zinc-700 text-xs mt-3"> {car.city} </p>
+            </section>
+          </Link>
+        ))}
       </main>
     </Container>
   );
