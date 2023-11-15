@@ -36,7 +36,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-interface ImageCarProps {
+export interface ImageCarProps {
   uid: string;
   name: string;
   url: string;
@@ -100,7 +100,7 @@ export function New() {
         await HandleUpload(image);
         console.log("deu certo");
       } else {
-        alert("Imagem invalida. Coloque uma imagem png u jpeg");
+        alert("Imagem invalida. Coloque uma imagem png ou jpeg");
         return;
       }
     }

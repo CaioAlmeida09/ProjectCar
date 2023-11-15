@@ -1,10 +1,10 @@
 import { Container } from "../../components/container";
-import ney from "../../assets/ney.webp";
 import { useState, useEffect } from "react";
 import { query, collection, getDocs, orderBy } from "firebase/firestore";
 import { db } from "../../services/firebaseconection";
 import { ImageCarProps } from "../../pages/dashboard/new/index";
 import { Link } from "react-router-dom";
+
 interface carProps {
   id: string;
   name: string;
@@ -17,6 +17,7 @@ interface carProps {
 }
 export function Home() {
   const [cars, setCars] = useState<carProps[]>([]);
+  const [loadimg, setLoadImg] = useState<string[]>([]);
 
   useEffect(() => {
     function LoadCars() {
@@ -46,6 +47,10 @@ export function Home() {
     }
     LoadCars();
   }, []);
+
+  function handleImage(id: string) {
+    setLoadImg((prevImageLoad) => [...prevImageLoad, id]);
+  }
   return (
     <Container>
       <form className="flex justify-center md:gap-12 gap-4 mt-5">
@@ -71,9 +76,15 @@ export function Home() {
               key={car.id}
               className=" flex flex-col px-3 py-2 items-center w-full bg-white"
             >
+              <div
+                className="w-full h-72 rounded-lg bg-slate-200"
+                style={{ display: loadimg.includes(car.id) ? "none" : "block" }}
+              ></div>
               <img
                 src={car.images[0].url}
                 className="w-full max-h-72 hover:scale-105 transition-all"
+                style={{ display: loadimg.includes(car.id) ? "block" : "none" }}
+                onLoad={() => handleImage(car.id)}
               />
               <h2 className="text-black font-bold text-lg mt-6">{car.name}</h2>
               <div className="mt-3 flex flex-col gap-8 mb-3 items-center">
