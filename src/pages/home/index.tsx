@@ -93,7 +93,7 @@ export function Home() {
                   {car.year} | {car.km}
                 </p>
                 <strong className="font-medium text-zinc-700 text-lg">
-                  {car.price}
+                  R$ {car.price}
                 </strong>
               </div>
               <div className="w-full h-px bg-slate-400"> </div>

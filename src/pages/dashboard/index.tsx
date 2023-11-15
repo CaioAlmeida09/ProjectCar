@@ -1,7 +1,14 @@
 import { Container } from "../../components/container";
 import { PlaceHeader } from "../../components/placeHeader";
 import { FiTrash2 } from "react-icons/fi";
-import { getDocs, query, collection, where } from "firebase/firestore";
+import {
+  getDocs,
+  query,
+  collection,
+  where,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../../services/firebaseconection";
 import { useState, useEffect, useContext } from "react";
 import { ImageCarProps } from "../../pages/dashboard/new/index";
@@ -21,6 +28,7 @@ interface carProps {
 export function Dashboard() {
   const [cars, setCars] = useState<carProps[]>([]);
   const { user } = useContext(AuthContext);
+  const [loadImg, setLoadImg] = useState<string[]>([]);
 
   useEffect(() => {
     function LoadCars() {
@@ -45,7 +53,6 @@ export function Dashboard() {
             });
           });
           setCars(listCars);
-          console.log(listCars);
         })
         .catch((err) => {
           console.log(err);
@@ -54,35 +61,52 @@ export function Dashboard() {
     }
     LoadCars();
   }, [user]);
-  function HandleDelete() {
-    console.log("deletando");
+  async function HandleDelete(id: string) {
+    const docRef = doc(db, "Cars", id);
+    await deleteDoc(docRef);
+    setCars(cars.filter((cars) => cars.id !== id));
+  }
+  function handleImg(id: string) {
+    setLoadImg((prevImageLoad) => [...prevImageLoad, id]);
   }
 
   return (
     <Container>
       <PlaceHeader />
       <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <section className="w-full bg-white rounded-lg relative">
-          <button
-            className="absolute bg-white w-14 h-14 rounded-full flex items-center justify-center right-2 top-2 drop-shadow"
-            onClick={() => HandleDelete()}
-          >
-            <FiTrash2 size={26} color="#000" />
-          </button>
-          <img
-            className="w-fuul rounded-lg mg-2 max-h-70 "
-            src="https://firebasestorage.googleapis.com/v0/b/webcarros-d2b8b.appspot.com/o/images%2FGmpnAN3WdogCNnhOrIBA6VX0kNi2%2F618c6e52-6bd5-4638-bd06-39480d3c5a45?alt=media&token=c9010910-c35c-4fcc-a85f-8330ec8025cd"
-          />
-          <p className="font-bold mt-1 px-2 mb-2"> Nissan Versan</p>
-          <div className=" flex flex-col px-2 ">
-            <span className="text-zinc-700">ANO 2026 | 232332 KM</span>
-            <strong className="text-black font-bold mt-4"> R$ 150.000</strong>
-          </div>
-          <div className="w-full h-px bg-slate-200 my-2"></div>
-          <div>
-            <span className="px-2 pb-2"> Campo Grande MS</span>
-          </div>
-        </section>
+        {cars.map((car) => (
+          <section key={car.id} className="w-full bg-white rounded-lg relative">
+            <button
+              className="absolute bg-white w-14 h-14 rounded-full flex items-center justify-center right-2 top-2 drop-shadow"
+              onClick={() => HandleDelete(car.id)}
+            >
+              <FiTrash2 size={26} color="#000" />
+            </button>
+            <div
+              className=" w-full max-h-70 bg-slate-300 rounded-lg"
+              style={{ display: loadImg.includes(car.id) ? "none" : "block" }}
+            ></div>
+            <img
+              className="w-fuul rounded-lg mg-2 max-h-70 "
+              src={car.images[0].url}
+              style={{ display: loadImg.includes(car.id) ? "block" : "none" }}
+              onLoad={() => handleImg(car.id)}
+            />
+            <p className="font-bold mt-1 px-2 mb-2"> {car.name}</p>
+            <div className=" flex flex-col px-2 ">
+              <span className="text-zinc-700">
+                {car.year} | {car.km}km
+              </span>
+              <strong className="text-black font-bold mt-4">
+                R$ {car.price}
+              </strong>
+            </div>
+            <div className="w-full h-px bg-slate-200 my-2"></div>
+            <div>
+              <span className="px-2 pb-2"> {car.city}</span>
+            </div>
+          </section>
+        ))}
       </main>
     </Container>
   );
