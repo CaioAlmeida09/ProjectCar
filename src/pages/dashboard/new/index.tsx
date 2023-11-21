@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthContext } from "../../../contexts/context";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import toast from "react-hot-toast";
 
 import { storage, db } from "../../../services/firebaseconection";
 import {
@@ -56,10 +57,9 @@ export function New() {
 
   function OnSubmit(data: FormData) {
     if (imageCar.length === 0) {
-      alert("Anexe uma imagem");
+      toast.error("Anexe uma imagem");
       return;
     }
-
     console.log(data);
     const CartListImage = imageCar.map((car) => {
       return {
@@ -69,7 +69,7 @@ export function New() {
       };
     });
     addDoc(collection(db, "Cars"), {
-      name: data.name,
+      name: data.name.toUpperCase(),
       model: data.model,
       whatsapp: data.whatsapp,
       city: data.city,
@@ -84,8 +84,8 @@ export function New() {
     })
       .then(() => {
         reset();
+        toast.success("Carro cadastrado com Sucesso");
         setImageCar([]);
-        console.log("Cadastrado com sucesso");
       })
       .catch((error) => {
         console.log("Erro ao cadastrar no banco");
@@ -145,9 +145,9 @@ export function New() {
     <Container>
       <PlaceHeader />
       <main>
-        <section className="mt-3 w-full h-32 bg-white flex items-center justify-start sm:flex-row flex-col">
+        <section className="mt-3 w-full h-32 bg-white flex items-center justify-start sm:flex-row md:-flex-col ">
           <button className=" flex justify-center items-center h-32 w-40 border-zinc-950 border-2 ">
-            <div className="absolute cursor-pointer ">
+            <div className="absolute cursor-pointer md:w-28 ">
               {" "}
               <FiUpload size={30} />
             </div>
@@ -272,7 +272,7 @@ export function New() {
             )}
           </div>
           <button
-            className="bg-black text-white text-medium rounded-md h-12 cursor-pointer hover:opacity-90"
+            className="bg-black text-white text-medium rounded-md h-12 md:px-3 py-2 cursor-pointer hover:opacity-90"
             type="submit"
           >
             {" "}

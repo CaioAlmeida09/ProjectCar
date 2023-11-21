@@ -4,8 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../../components/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { auth, db, storage } from "../../services/firebaseconection";
+import { auth } from "../../services/firebaseconection";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
@@ -51,12 +52,14 @@ export function Register() {
           email: data.email,
           uid: user.user.uid,
         });
+        toast.success("Bem vindo ao Project Cars");
         console.log("Cadastrado com Sucesso");
         navigate("/dashboard", { replace: true });
       })
       .catch((error) => {
         console.log("Erro no cadastro do Usuário");
         console.log(error);
+        toast.error("erro ao cadastrar");
       });
   }
   useEffect(() => {
