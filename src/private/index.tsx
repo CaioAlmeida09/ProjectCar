@@ -7,19 +7,21 @@ interface ChildrenProps {
   children: ReactNode;
 }
 
-export function Private({ children }: ChildrenProps): any {
+export function Private({ children }: ChildrenProps): ReactNode | null {
   const navigate = useNavigate();
   const { signed, loadingAuth } = useContext(AuthContext);
 
   if (loadingAuth) {
-    return;
-    <div>
-      <LoadingIcons.Bars />
-    </div>;
+    return (
+      <div>
+        <LoadingIcons.Bars />
+      </div>
+    );
   }
 
   if (!signed) {
-    return navigate("/login");
+    navigate("/login");
+    return null;
   }
 
   return children;

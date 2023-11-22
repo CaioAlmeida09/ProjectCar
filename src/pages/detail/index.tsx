@@ -55,7 +55,7 @@ export function Detail() {
     }
 
     LoadCar();
-  }, [id]);
+  }, [id, navigate]);
 
   useEffect(() => {
     function HandleSize() {

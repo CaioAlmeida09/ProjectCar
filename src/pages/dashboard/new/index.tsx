@@ -147,7 +147,7 @@ export function New() {
       <main>
         <section className="mt-3 w-full h-32 bg-white flex items-center justify-start sm:flex-row md:-flex-col ">
           <button className=" flex justify-center items-center h-32 w-40 border-zinc-950 border-2 ">
-            <div className="absolute cursor-pointer md:w-28 ">
+            <div className="absolute cursor-pointer ">
               {" "}
               <FiUpload size={30} />
             </div>
