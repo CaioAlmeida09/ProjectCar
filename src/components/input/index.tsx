@@ -11,19 +11,34 @@ interface InputProps {
     | "price"
     | "city"
     | "whatsapp"
-    | "description";
+    | "description"
+    | "password"
+    | "email";
   register: UseFormRegister<{
     name: string;
-    model: string;
-    year: string;
-    KM: string;
-    price: string;
-    city: string;
-    whatsapp: string;
-    description: string;
+    model?: string;
+    year?: string;
+    KM?: string;
+    price?: string;
+    city?: string;
+    whatsapp?: string;
+    description?: string;
+    password: string;
+    email: string;
   }>;
   error?: string;
-  rules?: RegisterOptions;
+  rules?: RegisterOptions<{
+    name: string;
+    model?: string;
+    year?: string;
+    KM?: string;
+    price?: string;
+    city?: string;
+    whatsapp?: string;
+    description?: string;
+    password: string;
+    email: string;
+  }>;
 }
 
 export function Input({

@@ -14,7 +14,6 @@ import { db, storage } from "../../services/firebaseconection";
 import { useState, useEffect, useContext } from "react";
 import { ImageCarProps } from "../../pages/dashboard/new/index";
 import { AuthContext } from "../../contexts/context";
-import { async } from "@firebase/util";
 
 interface carProps {
   id: string;
