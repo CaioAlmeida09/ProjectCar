@@ -3,45 +3,22 @@ import { RegisterOptions, UseFormRegister } from "react-hook-form";
 interface InputProps {
   placeholder: string;
   type: string;
-  name:
-    | "name"
-    | "model"
-    | "year"
-    | "KM"
-    | "price"
-    | "city"
-    | "whatsapp"
-    | "description"
-    | "password"
-    | "email";
+  name: "name" | "password" | "email";
   register: UseFormRegister<{
     name: string;
-    model: string;
-    year: string;
-    KM: string;
-    price: string;
-    city: string;
-    whatsapp: string;
-    description: string;
     password: string;
     email: string;
   }>;
   error?: string;
   rules?: RegisterOptions<{
     name: string;
-    model?: string;
-    year?: string;
-    KM?: string;
-    price?: string;
-    city?: string;
-    whatsapp?: string;
-    description?: string;
+
     password: string;
     email: string;
   }>;
 }
 
-export function Input({
+export function InputRegister({
   name,
   type,
   placeholder,

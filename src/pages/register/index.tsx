@@ -1,7 +1,7 @@
 import logo from "../../assets/logo.svg";
 import { Container } from "../../components/container";
 import { Link, useNavigate } from "react-router-dom";
-import { Input } from "../../components/input";
+import { InputRegister } from "../../components/input/inputRegister";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import toast from "react-hot-toast";
@@ -78,21 +78,21 @@ export function Register() {
           <Link to="/">
             <img src={logo} alt="logo" />
           </Link>
-          <Input
+          <InputRegister
             placeholder="Digite seu nome Completo"
             type="name"
             name="name"
             error={errors.name?.message}
             register={register}
           />
-          <Input
+          <InputRegister
             name="email"
             placeholder="Digite um e-mail para cadastro"
             type="e-mail"
             error={errors.email?.message}
             register={register}
           />
-          <Input
+          <InputRegister
             placeholder="Digite uma senha"
             type="password"
             name="password"
