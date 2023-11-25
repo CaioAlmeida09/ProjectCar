@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useState } from "react";
 import { Container } from "../../../components/container";
-import { Input } from "../../../components/input";
+import { InputNew } from "../../../components/input/inputNew";
 import { PlaceHeader } from "../../../components/placeHeader";
 import { FiUpload } from "react-icons/fi";
 import { useForm } from "react-hook-form";
@@ -186,7 +186,7 @@ export function New() {
         >
           <div className="mt-5">
             <label className="mb-2 font-medium"> Nome do Carro</label>
-            <Input
+            <InputNew
               register={register}
               type="text"
               name="name"
@@ -196,7 +196,7 @@ export function New() {
           </div>
           <div>
             <label className="mb-2 font-medium"> Modelo do Carro</label>
-            <Input
+            <InputNew
               register={register}
               type="text"
               name="model"
@@ -207,7 +207,7 @@ export function New() {
           <section className="mt-3 w-full bg-white flex items-center justify-center sm:flex-row flex-col p-3 gap-6">
             <div className="flex flex-col w-full">
               <label className="mb-2 font-medium"> Ano</label>
-              <Input
+              <InputNew
                 register={register}
                 type="text"
                 name="year"
@@ -217,7 +217,7 @@ export function New() {
             </div>
             <div className="flex flex-col w-full">
               <label className="mb-2 font-medium"> KM</label>
-              <Input
+              <InputNew
                 register={register}
                 type="text"
                 name="KM"
@@ -229,7 +229,7 @@ export function New() {
           <section className="mt-3 w-full bg-white flex items-center justify-center sm:flex-row flex-col p-3 gap-6">
             <div className="flex flex-col w-full">
               <label className="mb-2 font-medium"> Cidade</label>
-              <Input
+              <InputNew
                 register={register}
                 type="text"
                 name="city"
@@ -239,7 +239,7 @@ export function New() {
             </div>
             <div className="flex flex-col w-full">
               <label className="mb-2 font-medium"> Whatsapp</label>
-              <Input
+              <InputNew
                 register={register}
                 type="text"
                 name="whatsapp"
@@ -250,7 +250,7 @@ export function New() {
           </section>
           <div>
             <label className="mb-2 font-medium"> Preço</label>
-            <Input
+            <InputNew
               register={register}
               type="text"
               name="price"
