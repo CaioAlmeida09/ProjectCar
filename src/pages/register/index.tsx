@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import logo from "../../assets/logo.svg";
 import { Container } from "../../components/container";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,7 +16,6 @@ import {
 import { useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/context";
 
-//
 const schema = z.object({
   name: z.string().nonempty("Esse campo é obrigatório"),
   email: z
@@ -104,8 +104,7 @@ export function Register() {
             className="bg-black w-full h-9 rounded-lg text-white font-medium"
             type="submit"
           >
-            {" "}
-            Cadastrar{" "}
+            Cadastrar
           </button>
           <Link to="/login">
             <p className="text-zinx-900 text-xs font-medium hover:font-bold">

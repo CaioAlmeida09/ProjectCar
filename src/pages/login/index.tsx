@@ -1,7 +1,6 @@
 import { Container } from "../../components/container";
 import logo from "../../assets/logo.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { Input } from "../../components/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEffect } from "react";
@@ -9,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../../services/firebaseconection";
 import toast from "react-hot-toast";
+import { InputLogin } from "../../components/input/inputLogin";
 
 const schema = z.object({
   email: z
@@ -62,14 +62,14 @@ export function Login() {
           <Link to="/">
             <img src={logo} alt="logo" />
           </Link>
-          <Input
+          <InputLogin
             placeholder="Digite seu e-mail..."
             name="email"
             type="email"
             error={errors.email?.message}
             register={register}
           />
-          <Input
+          <InputLogin
             placeholder="******"
             name="password"
             type="password"

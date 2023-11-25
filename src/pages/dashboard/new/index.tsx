@@ -10,7 +10,7 @@ import { AuthContext } from "../../../contexts/context";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import toast from "react-hot-toast";
-
+import {} from "../../../components/input/index";
 import { storage, db } from "../../../services/firebaseconection";
 import {
   ref,
@@ -33,8 +33,6 @@ const schema = z.object({
     .min(1, "o telefone é obrigatório")
     .refine((value) => /^(\d{11,12})$/.test(value)),
   description: z.string().nonempty("A descrição é brigatória"),
-  password: z.string().nonempty("a senha é obrigatória"),
-  email: z.string().nonempty("o campo e-mail é obrigatório"),
 });
 
 type FormData = z.infer<typeof schema>;

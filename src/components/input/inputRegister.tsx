@@ -12,7 +12,6 @@ interface InputProps {
   error?: string;
   rules?: RegisterOptions<{
     name: string;
-
     password: string;
     email: string;
   }>;
